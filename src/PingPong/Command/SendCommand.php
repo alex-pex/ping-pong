@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * Description of SendCommand
@@ -18,7 +19,7 @@ class SendCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('event', InputArgument::REQUIRED)
+            ->addArgument('message', InputArgument::REQUIRED)
             ->setName('ping:send')
             ->setDescription("Send a ping request")
         ;
@@ -26,10 +27,23 @@ class SendCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $message = base64_decode($input->getArgument('event'));
+        $app = $this->getSilexApplication();
 
-        $output->writeln($message);
+        // init connection
+        $connection = $app['amqp']['default'];
+        $channel = $connection->channel();
 
-        exit(0);
+        // create channel
+        $channel->queue_declare('hello', false, true, false, false);
+
+        // send message
+        $message = $input->getArgument('message');
+        $channel->basic_publish(new AMQPMessage($message), '', 'hello');
+
+        $output->writeln(' [x] Sent "' . $message . '"');
+
+        // close channel and connection
+        $channel->close();
+        $connection->close();
     }
 }

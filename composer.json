@@ -6,6 +6,7 @@
     },
     "require": {
         "silex/silex": "~1.2",
-        "knplabs/console-service-provider": "~1.0"
+        "knplabs/console-service-provider": "~1.0",
+        "ebichan/silex-amqp-provider": "~1.0"
     }
 }

@@ -18,7 +18,7 @@ class BounceCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('event', InputArgument::REQUIRED)
+            ->addArgument('message', InputArgument::REQUIRED)
             ->setName('ping:bounce')
             ->setDescription("Receive a ping request and bounce it back")
         ;
@@ -26,9 +26,10 @@ class BounceCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $message = base64_decode($input->getArgument('event'));
+        $message = base64_decode($input->getArgument('message'));
 
-        $output->writeln($message);
+        file_put_contents($this->getProjectDirectory().'/messages.log', $message."\n", FILE_APPEND);
+        $output->writeln(' [x] Received "' . $message . '"');
 
         exit(0);
     }
