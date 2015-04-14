@@ -1,0 +1,11 @@
+{
+    "name": "stadline/ping-pong",
+    "description": "A RabbitMQ test project",
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {
+        "silex/silex": "~1.2",
+        "knplabs/console-service-provider": "~1.0"
+    }
+}
