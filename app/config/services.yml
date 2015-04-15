@@ -4,6 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-    app.ping_consumer:
+    ping_consumer:
         class: AppBundle\Consumer\PingConsumer
         arguments: [ %kernel.root_dir% ]
