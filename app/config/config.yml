@@ -12,11 +12,18 @@ old_sound_rabbit_mq:
         default:
             lazy: true
     producers:
+        hello:
+            connection:       default
         ping:
             connection:       default
     consumers:
-        ping:
+        hello:
             connection:       default
             exchange_options: { name: 'amq.direct', type: direct }
             queue_options:    { name: 'hello' }
+            callback:         hello_consumer
+        ping:
+            connection:       default
+            exchange_options: { name: 'amq.direct', type: direct }
+            queue_options:    { name: 'ping' }
             callback:         ping_consumer

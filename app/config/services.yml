@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+    hello_consumer:
+        class: AppBundle\Consumer\HelloConsumer
+        arguments: [ %kernel.root_dir% ]
     ping_consumer:
         class: AppBundle\Consumer\PingConsumer
         arguments: [ %kernel.root_dir% ]

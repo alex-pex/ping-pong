@@ -10,29 +10,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Description of PingSendCommand
+ * Description of HelloSendCommand
  *
  * @author alexandre
  */
-class PingSendCommand extends ContainerAwareCommand
+class HelloSendCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
             ->addArgument('message', InputArgument::REQUIRED)
-            ->setName('ping:send')
-            ->setDescription("Send a ping request")
+            ->setName('hello:send')
+            ->setDescription("Send a hello message")
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get producer
-        $producer = $this->getContainer()->get('old_sound_rabbit_mq.ping_producer');
+        $producer = $this->getContainer()->get('old_sound_rabbit_mq.hello_producer');
 
         // send message
         $message = $input->getArgument('message');
-        $producer->publish($message, 'ping');
+        $producer->publish($message, 'hello');
 
         $output->writeln(' [x] Sent "' . $message . '"');
     }
