@@ -42,6 +42,8 @@
     },
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
