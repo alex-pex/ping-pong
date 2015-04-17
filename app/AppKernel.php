@@ -13,6 +13,9 @@ class AppKernel extends Kernel
 
             // extra bundles
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Ivan1986\SupervisorBundle\SupervisorBundle(),
+            new Phobetor\RabbitMqSupervisorBundle\RabbitMqSupervisorBundle(),
 
             // app bundle
             new AppBundle\AppBundle(),
