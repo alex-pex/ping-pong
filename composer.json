@@ -14,8 +14,14 @@
         "symfony/finder": "2.6.*",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "incenteev/composer-parameter-handler": "~2.0",
-        "oldsound/rabbitmq-bundle": "~1.6"
+        "oldsound/rabbitmq-bundle": "dev-detached-queues"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/alex-pex/RabbitMqBundle.git"
+        }
+    ],
     "scripts": {
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"

@@ -9,4 +9,3 @@ services:
         arguments: [ %kernel.root_dir% ]
     ping_consumer:
         class: AppBundle\Consumer\PingConsumer
-        arguments: [ %kernel.root_dir% ]

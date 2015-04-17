@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96e7d52f87d86026b6a575c5e9eb210d",
+    "hash": "b9d3d7941d0b345f37e72176a2564d6b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -182,27 +182,34 @@
         },
         {
             "name": "oldsound/rabbitmq-bundle",
-            "version": "v1.6.0",
-            "target-dir": "OldSound/RabbitMqBundle",
+            "version": "dev-detached-queues",
             "source": {
                 "type": "git",
-                "url": "https://github.com/videlalvaro/RabbitMqBundle.git",
-                "reference": "a15a4eba67324a24234280ace0afb5fc45605f3b"
+                "url": "https://github.com/alex-pex/RabbitMqBundle.git",
+                "reference": "d8ceb5ccc275b1c0c48589132fab6ca0c981936b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/RabbitMqBundle/zipball/a15a4eba67324a24234280ace0afb5fc45605f3b",
-                "reference": "a15a4eba67324a24234280ace0afb5fc45605f3b",
+                "url": "https://api.github.com/repos/alex-pex/RabbitMqBundle/zipball/d8ceb5ccc275b1c0c48589132fab6ca0c981936b",
+                "reference": "d8ceb5ccc275b1c0c48589132fab6ca0c981936b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/framework-bundle": "~2.1",
-                "symfony/yaml": "~2.0",
-                "videlalvaro/php-amqplib": "~2.4.0"
+                "symfony/config": "~2.3",
+                "symfony/console": "~2.3",
+                "symfony/dependency-injection": "~2.3",
+                "symfony/event-dispatcher": "~2.3",
+                "symfony/yaml": "~2.3",
+                "videlalvaro/php-amqplib": "~2.5.0"
             },
             "require-dev": {
-                "symfony/console": "~2.0"
+                "phpunit/phpunit": ">=3.7.0",
+                "symfony/debug": "~2.3",
+                "symfony/serializer": "~2.3"
+            },
+            "suggest": {
+                "symfony/framework-bundle": "To use this lib as a full Symfony Bundle and to use the profiler data collector"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -211,11 +218,10 @@
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "OldSound\\RabbitMqBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -226,12 +232,16 @@
             ],
             "description": "Integrates php-amqplib with Symfony2 and RabbitMq",
             "keywords": [
-                "Symfony2",
+                "amqp",
                 "message",
                 "queue",
-                "rabbitmq"
+                "rabbitmq",
+                "symfony2"
             ],
-            "time": "2015-01-28 16:22:31"
+            "support": {
+                "source": "https://github.com/alex-pex/RabbitMqBundle/tree/detached-queues"
+            },
+            "time": "2015-04-16 15:05:21"
         },
         {
             "name": "psr/log",
@@ -1486,20 +1496,21 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.4.1",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/videlalvaro/php-amqplib.git",
-                "reference": "58044157b30853a1a425e26e9ff9895247668ac3"
+                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/58044157b30853a1a425e26e9ff9895247668ac3",
-                "reference": "58044157b30853a1a425e26e9ff9895247668ac3",
+                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
+                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
                 "shasum": ""
             },
             "require": {
                 "ext-bcmath": "*",
+                "ext-mbstring": "*",
                 "php": ">=5.3.0"
             },
             "require-dev": {
@@ -1535,13 +1546,15 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2014-10-06 11:00:55"
+            "time": "2015-02-18 18:16:04"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "oldsound/rabbitmq-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

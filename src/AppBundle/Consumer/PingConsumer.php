@@ -13,19 +13,14 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 class PingConsumer implements ConsumerInterface
 {
-    private $projectRoot;
-
-    public function __construct($rootDir)
-    {
-        $this->projectRoot = $rootDir . '/..';
-    }
-
     public function execute(AMQPMessage $msg)
     {
         $message = $msg->body;
         $output = new ConsoleOutput();
 
-        file_put_contents($this->projectRoot . '/messages.log', $message . "\n", FILE_APPEND);
-        $output->writeln(' [x] Received "' . $message . '"');
+        $output->writeln(' [x] Received ping at "' . $message . '"');
+        usleep(mt_rand(10000, 400000));
+
+        return 'Pong!';
     }
 }

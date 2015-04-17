@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
 
 /**
  * Description of PingSendCommand
@@ -19,7 +20,6 @@ class PingSendCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->addArgument('message', InputArgument::REQUIRED)
             ->setName('ping:send')
             ->setDescription("Send a ping request")
         ;
@@ -27,13 +27,34 @@ class PingSendCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get producer
-        $producer = $this->getContainer()->get('old_sound_rabbit_mq.ping_producer');
+        // get RPC client
+        $client = $this->getContainer()->get('old_sound_rabbit_mq.ping_rpc');
+
+        // send pings
+        for ($i = 0; $i < 1; $i++) {
+            $response = $this->getPingTime($client);
+
+            $output->writeln(' [x] Ping sent, server answered "' . $response['message'] . '" in "' . $response['time'] . 's');
+        }
+    }
+
+    private function getPingTime(RpcClient $client)
+    {
+        // initial time
+        $requestTime = microtime(true);
 
         // send message
-        $message = $input->getArgument('message');
-        $producer->publish($message, 'ping');
+        $requestId = uniqid();
+        //var_dump($requestId);
+        $client->addRequest(date('c'), 'ping', $requestId);
+        $replies = $client->getReplies();
+        //var_dump($replies);
+        $message = $replies[$requestId];
 
-        $output->writeln(' [x] Sent "' . $message . '"');
+        // send ping response
+        return array(
+            'message' => $message,
+            'time' => microtime(true) - $requestTime,
+        );
     }
 }
