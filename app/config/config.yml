@@ -1,0 +1,31 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: services.yml }
+
+framework:
+    secret:         "%secret%"
+    default_locale: "%locale%"
+
+# RabbitMQ Configuration
+old_sound_rabbit_mq:
+    connections:
+        default:
+            lazy: true
+
+    # classic producers / consumers
+    producers:
+        hello:
+            connection:    default
+    consumers:
+        hello:
+            queue_options: { name: 'hello' }
+            callback:      hello_consumer
+
+    # remote procedure calls
+    rpc_clients:
+        ping:
+            unserializer:  json_decode
+    rpc_servers:
+        ping:
+            serializer:    json_encode
+            callback:      ping_consumer
