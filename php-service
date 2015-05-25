@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ -z "${BASH_SOURCE[1]}" ]; then
+    >&2 echo "This script cannot be used alone, it must be included by another script"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    PIDFILE="$PWD/`basename ${BASH_SOURCE[1]}`.pid"
+else
+    PIDFILE="$PWD/`basename ${BASH_SOURCE[1]}`_$2.pid"
+fi
+
+case $1 in
+    start)
+        if [ -s $PIDFILE ]; then
+            >&2 echo "It looks like the process is already started"
+            exit 1
+        fi
+
+        ../../php-start $PHP_COMMAND > $PIDFILE
+
+        ;;
+    stop)
+        if [ ! -s $PIDFILE ]; then
+            >&2 echo "It looks like the process is already stopped"
+            exit 1
+        fi
+
+        ../../php-stop < $PIDFILE; rm $PIDFILE
+
+        ;;
+    *)
+        echo "usage: command {start|stop} {node_id}" ;;
+esac
+
+exit 0

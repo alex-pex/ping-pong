@@ -1,23 +1,6 @@
 #!/bin/bash
 
-if [ -z "$2" ]; then
-    PIDFILE="${BASH_SOURCE[0]}.pid"
-else
-    PIDFILE="${BASH_SOURCE[0]}_$2.pid"
-fi
+PHP_COMMAND="bin/console rabbitmq:consumer -m 250 -w hello --env=dev"
 
-cd `dirname ${BASH_SOURCE[0]}`
-
-case $1 in
-    start)
-        ../../php-start bin/console rabbitmq:consumer -m 250 -w hello --env=dev > $PIDFILE ;;
-    stop)
-        ../../php-stop < $PIDFILE
-        rm $PIDFILE ;;
-    *)
-        echo "usage: command {start|stop} {node_id}" ;;
-esac
-
-cd $PWD
-
-exit 0
+cd "`dirname ${BASH_SOURCE[0]}`"
+source ../../php-service
