@@ -1,19 +1,29 @@
 #!/bin/bash
 
-if [ -z "${BASH_SOURCE[1]}" ]; then
+if [[ -z "${BASH_SOURCE[1]}" ]]; then
     >&2 echo "This script cannot be used alone, it must be included by another script"
     exit 1
 fi
 
-if [ -z "$2" ]; then
+if [[ -z "$2" ]]; then
     PIDFILE="$PWD/`basename ${BASH_SOURCE[1]}`.pid"
 else
     PIDFILE="$PWD/`basename ${BASH_SOURCE[1]}`_$2.pid"
 fi
 
+if [[ -s $PIDFILE ]]; then
+    PID=`cat $PIDFILE`
+fi
+
+if [[ ! -z $PID ]] && (kill -0 $PID 2> /dev/null); then
+    IS_RUNNING=1
+else
+    IS_RUNNING=0
+fi
+
 case $1 in
     start)
-        if [ -s $PIDFILE ]; then
+        if [[ $IS_RUNNING -eq 1 ]]; then
             >&2 echo "It looks like the process is already started"
             exit 1
         fi
@@ -22,7 +32,7 @@ case $1 in
 
         ;;
     stop)
-        if [ ! -s $PIDFILE ]; then
+        if [[ $IS_RUNNING -eq 0 ]]; then
             >&2 echo "It looks like the process is already stopped"
             exit 1
         fi
