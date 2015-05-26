@@ -15,16 +15,22 @@ if [[ -s $PIDFILE ]]; then
     PID=`cat $PIDFILE`
 fi
 
-if [[ ! -z $PID ]] && (kill -0 $PID 2> /dev/null); then
+if [[ ! -z $PID ]] && (ps -p$PID -o pid= > /dev/null 2>&1); then
     IS_RUNNING=1
 else
     IS_RUNNING=0
 fi
 
+if [[ $IS_RUNNING -eq 1 ]] && (kill -0 $PID 2> /dev/null); then
+    IS_KILLABLE=1
+else
+    IS_KILLABLE=0
+fi
+
 case $1 in
     start)
         if [[ $IS_RUNNING -eq 1 ]]; then
-            >&2 echo "It looks like the process is already started"
+            >&2 echo "It looks like the process cannot be started by `whoami`"
             exit 1
         fi
 
@@ -32,8 +38,8 @@ case $1 in
 
         ;;
     stop)
-        if [[ $IS_RUNNING -eq 0 ]]; then
-            >&2 echo "It looks like the process is already stopped"
+        if [[ $IS_RUNNING -eq 0 || $IS_KILLABLE -eq 0 ]]; then
+            >&2 echo "It looks like the process cannot be stopped by `whoami`"
             exit 1
         fi
 
