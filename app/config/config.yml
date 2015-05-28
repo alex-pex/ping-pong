@@ -20,6 +20,7 @@ old_sound_rabbit_mq:
         hello:
             queue_options: { name: 'hello' }
             callback:      hello_consumer
+            idle_timeout:  120
 
     # remote procedure calls
     rpc_clients:

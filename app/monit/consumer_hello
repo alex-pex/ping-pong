@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PHP_COMMAND="bin/console rabbitmq:consumer -m 250 hello"
+
+cd "`dirname ${BASH_SOURCE[0]}`"
+source ../../php-service
